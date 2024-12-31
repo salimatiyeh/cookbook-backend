@@ -5,6 +5,7 @@ class Recipe(models.Model):
         ingredients = models.TextField()
         instructions = models.TextField()
         created_at = models.DateTimeField(auto_now_add=True)
+        cook_time = models.IntegerField(null=True, blank=True)
 
 def __str__(self):
     return self.name
