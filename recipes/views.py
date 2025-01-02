@@ -7,7 +7,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.views import TokenRefreshView
-# from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 
@@ -76,3 +75,23 @@ class RecipeDetail(APIView):
 
         serializer = RecipeSerializer(recipe)
         return Response(serializer.data)
+
+    def put(self, request, id):
+        try:
+            recipe = Recipe.objects.get(id=id)
+        except Recipe.DoesNotExist:
+            return Response({'error': 'Recipe not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = RecipeSerializer(recipe, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_404_BAD_REQUEST)
+
+    def delete(self, request, id):
+        try:
+            recipe = Recipe.objects.get(id=id)
+            recipe.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Recipe.DoesNotExist:
+            return Response({'error': 'Recipe not found'}, status=status.HTTP_404_NOT_FOUND)
