@@ -17,7 +17,7 @@ urlpatterns = [
             url.name or (url.pattern._route if hasattr(url.pattern, '_route') else 'Unnamed URL'):
             str(url.pattern)
             for url in get_resolver().url_patterns
-            if hasattr(url, 'pattern')  # Filter out patterns without 'pattern'
+            if hasattr(url, 'pattern')
         })
     ),
 ]
