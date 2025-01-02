@@ -7,6 +7,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.views import TokenRefreshView
+# from django.shortcuts import get_object_or_404
+from django.http import Http404
+
 
 # Recipe List API
 class RecipeList(APIView):
@@ -55,10 +58,21 @@ class LoginUser(APIView):
             })
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-# Custom Token Refresh to Handle Errors Gracefully
+# Custom Token Refresh to Handle Errors
 class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         refresh_token = request.data.get('refresh')
         if not refresh_token:
             return Response({'error': 'Refresh token is required'}, status=400)
         return super().post(request, *args, **kwargs)
+
+# User show card API
+class RecipeDetail(APIView):
+    def get(self, request, id):
+        try:
+            recipe = Recipe.objects.get(id=id)
+        except Recipe.DoesNotExist:
+            raise Http404("Recipe not found")
+
+        serializer = RecipeSerializer(recipe)
+        return Response(serializer.data)
