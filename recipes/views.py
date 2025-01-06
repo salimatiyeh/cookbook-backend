@@ -1,14 +1,18 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .models import Recipe
-from .serializers import RecipeSerializer
+from rest_framework import status, generics
+from .models import Recipe, Ingredient
+from .serializers import RecipeSerializer, IngredientSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.http import Http404
 
+# Create Ingredient
+class IngredientCreate(generics.ListCreateAPIView):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
 
 # Recipe List API
 class RecipeList(APIView):
