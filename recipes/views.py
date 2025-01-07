@@ -9,6 +9,11 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.http import Http404
 
+# Ingredient List API
+class IngredientList(generics.ListAPIView):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
+
 # Create Ingredient
 class IngredientCreate(generics.ListCreateAPIView):
     queryset = Ingredient.objects.all()
