@@ -7,6 +7,17 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class RecipeSerializer(serializers.ModelSerializer):
+    ingredients = serializers.SlugRelatedField(
+        many=True,
+        queryset=Ingredient.objects.all(),
+        slug_field='name'  # Show ingredient name instead of ID
+    )
+
+# class RecipeSerializer(serializers.ModelSerializer):
+#     ingredients = serializers.PrimaryKeyRelatedField(
+#         queryset=Ingredient.objects.all(),
+#         many=True
+#     )
     class Meta:
         model = Recipe
         fields = '__all__'
